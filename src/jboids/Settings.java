@@ -6,15 +6,15 @@ public class Settings {
     /**
      * size defining half of boids width (one third of boids height) when rendered
      */
-    public static final int BOID_SIZE = 15;
+    public static final int BOID_SIZE = 10;
     /**
      * radius for how far boid is able to consider other boids (in cohesion and alignment for example) (in pixels)
      */
-    public static final int BOID_SIGHT = 500;
+    public static final int BOID_SIGHT = 250;
     /**
      * radius for how close another boid needs to be before boid begins steering away (in pixels)
      */
-    public static final int BOID_AVOID = 150;
+    public static final int BOID_AVOID = 100;
     /**
      * how fast boids move in pixels per frame
      */
@@ -22,7 +22,7 @@ public class Settings {
     /**
      * the maximum speed boids can steer, in radians per frame
      */
-    public static final double STEER_AMOUNT = 0.1;
+    public static final double STEER_AMOUNT = 0.05;
     /**
      * whether or not to draw circles for the sight and avoidance radii
      */
@@ -30,7 +30,7 @@ public class Settings {
     /**
      * whether or not to draw a line between boids when they can see each other
      */
-    public static final boolean DRAW_LINE_TO_FLOCKMATES = true;
+    public static final boolean DRAW_LINE_TO_FLOCKMATES = false;
     /**
      * whether or not to log the positions of all boids
      */
