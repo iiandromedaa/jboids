@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import jboids.Boid;
-import static jboids.Settings.BOID_SIZE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static jboids.Settings.*;
 
 public class JBoidsGUI {
 
@@ -22,6 +24,7 @@ public class JBoidsGUI {
         JFrame frame = new JFrame("JBoids");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new JBoidsCanvas());
+        frame.setUndecorated(true);
         frame.setVisible(true);
     }
 
@@ -30,13 +33,16 @@ public class JBoidsGUI {
         private List<Boid> boids = new ArrayList<>();
         private Timer timer;
 
-        private static final int[] X_POINTS = {-BOID_SIZE, 0, BOID_SIZE};
-        private static final int[] Y_POINTS = {BOID_SIZE, -2*BOID_SIZE, BOID_SIZE};
+        private static final int[] X_POINTS = {-BOID_SIZE, 2*BOID_SIZE, -BOID_SIZE};
+        private static final int[] Y_POINTS = {BOID_SIZE, 0, -BOID_SIZE};
 
         JBoidsCanvas() {
             timer = new Timer(16, this);
             timer.start();
-            boids.add(new Boid(100, 100, 0));
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                boids.add(new Boid(random.nextInt(0, 200), random.nextInt(0, 200), 0));
+            }
         }
 
         @Override
@@ -47,13 +53,12 @@ public class JBoidsGUI {
             for (Boid boid : boids) {
                 drawBoid(boid, g);
             }
-
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             for (Boid boid : boids) {
-                boid.updatePosition(getWidth(), getHeight());
+                boid.updatePosition(getWidth(), getHeight(), boids);
             }
             repaint();
             Toolkit.getDefaultToolkit().sync();
@@ -61,6 +66,20 @@ public class JBoidsGUI {
 
         private void drawBoid(Boid boid, Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
+
+            if (DRAW_LINE_TO_FLOCKMATES) {
+                g2d.setColor(Color.WHITE);
+                for (Boid b : boids) {
+                    for (Boid nearbyBoid : b.getNearbyBoids(boids, BOID_SIGHT)) {
+                        g2d.drawLine(
+                            (int)b.getX(), 
+                            (int)b.getY(), 
+                            (int)nearbyBoid.getX(), 
+                            (int)nearbyBoid.getY()
+                        );
+                    }
+                }
+            }
 
             g2d.translate(boid.getX(), boid.getY());
             g2d.rotate(boid.getAngle());
@@ -70,6 +89,15 @@ public class JBoidsGUI {
 
             g2d.setColor(Color.RED);
             g2d.fillOval(-3, -3, 6, 6);
+
+            if (DRAW_RADII) {
+                g2d.setColor(Color.WHITE);
+                g2d.drawOval(-BOID_SIGHT/2, -BOID_SIGHT/2, BOID_SIGHT, BOID_SIGHT);
+
+                g2d.setColor(Color.YELLOW);
+                g2d.drawOval(-BOID_AVOID/2, -BOID_AVOID/2, BOID_AVOID, BOID_AVOID);
+            }
+
             g2d.dispose();
         }
 
