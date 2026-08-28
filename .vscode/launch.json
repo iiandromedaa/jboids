@@ -7,7 +7,7 @@
 
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Run",
             "request": "launch",
             "mainClass": "jboids.App"
         }
