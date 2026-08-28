@@ -26,10 +26,14 @@ public class Settings {
     /**
      * whether or not to draw circles for the sight and avoidance radii
      */
-    public static final boolean DRAW_RADII = true;
+    public static final boolean DRAW_RADII = false;
     /**
      * whether or not to draw a line between boids when they can see each other
      */
     public static final boolean DRAW_LINE_TO_FLOCKMATES = true;
+    /**
+     * whether or not to log the positions of all boids
+     */
+    public static final boolean LOG_BOIDS = false;
 
 }

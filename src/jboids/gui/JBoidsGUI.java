@@ -40,8 +40,8 @@ public class JBoidsGUI {
             timer = new Timer(16, this);
             timer.start();
             Random random = new Random();
-            for (int i = 0; i < 10; i++) {
-                boids.add(new Boid(random.nextInt(0, 200), random.nextInt(0, 200), 0));
+            for (int i = 0; i < 15; i++) {
+                boids.add(new Boid(random.nextInt(0, 500), random.nextInt(0, 500), random.nextInt(0, 6)));
             }
         }
 
@@ -59,6 +59,9 @@ public class JBoidsGUI {
         public void actionPerformed(ActionEvent e) {
             for (Boid boid : boids) {
                 boid.updatePosition(getWidth(), getHeight(), boids);
+                if (LOG_BOIDS)
+                    System.out.println(boid.getX() + "x, " + 
+                        boid.getY() + "y, " + boid.getAngle() + " rad");
             }
             repaint();
             Toolkit.getDefaultToolkit().sync();
@@ -70,12 +73,12 @@ public class JBoidsGUI {
             if (DRAW_LINE_TO_FLOCKMATES) {
                 g2d.setColor(Color.WHITE);
                 for (Boid b : boids) {
-                    for (Boid nearbyBoid : b.getNearbyBoids(boids, BOID_SIGHT)) {
+                    for (Boid nearby : b.getNearby(boids, BOID_AVOID, getWidth(), getHeight())) {
                         g2d.drawLine(
                             (int)b.getX(), 
                             (int)b.getY(), 
-                            (int)nearbyBoid.getX(), 
-                            (int)nearbyBoid.getY()
+                            (int)nearby.getX(), 
+                            (int)nearby.getY()
                         );
                     }
                 }
