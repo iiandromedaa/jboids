@@ -1,6 +1,7 @@
+package jboids;
 import javax.swing.SwingUtilities;
 
-import gui.JBoidsGUI;
+import jboids.gui.JBoidsGUI;
 
 public class App {
 
