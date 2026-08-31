@@ -61,7 +61,7 @@ public class Boid {
                 Math.cos(awayAngle - angleRadians)    
             );
             double distSq = (dx * dx) + (dy * dy);
-            double steerStrength = 250 / (Math.sqrt(distSq) + 1);
+            double steerStrength = AVOIDANCE_STEER_COEFF / (Math.sqrt(distSq) + 1);
             // extra steer given to separation, for fun mostly
             angleRadians += Math.clamp(
                 dAngle, 

@@ -35,5 +35,8 @@ public class Settings {
      * whether or not to log the positions of all boids
      */
     public static final boolean LOG_BOIDS = false;
-
+    /**
+     * avoidance steering strength is calculated by COEFFICIENT / distance (to closest boid) + 1
+     */
+    public static final double AVOIDANCE_STEER_COEFF = 250;
 }
