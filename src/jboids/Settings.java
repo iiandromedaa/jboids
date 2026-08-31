@@ -39,4 +39,17 @@ public class Settings {
      * avoidance steering strength is calculated by COEFFICIENT / distance (to closest boid) + 1
      */
     public static final double AVOIDANCE_STEER_COEFF = 250;
+    /**
+     * should boids die after 20-30 seconds?
+     */
+    public static final boolean BOIDS_DIE = true;
+    /**
+     * should boids not flock with boids on other teams?
+     */
+    public static final boolean BOIDS_SEGREGATE = true;
+    /**
+     * target delay between frames in ms
+     */
+    public static final int FRAME_TIME = 16;
+
 }

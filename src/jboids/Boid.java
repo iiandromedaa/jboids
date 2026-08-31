@@ -2,6 +2,7 @@ package jboids;
 
 import static jboids.Settings.*;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +15,22 @@ public class Boid {
     private int goalX;
     private int goalY;
 
+    private BoidTeam team;
+
     public Boid(double x, double y, double angleRadians) {
+        this(x, y, angleRadians, BoidTeam.WHITE);
+    }
+
+    public Boid(double x, double y, double angleRadians, BoidTeam team) {
         this.x = x;
         this.y = y;
         this.angleRadians = angleRadians;
+        this.team = team;
     }
 
     public void updatePosition(int width, int height, List<Boid> boids) {
-        List<Boid> flockmates = getNearby(boids, BOID_SIGHT, width, height);
-        List<Boid> dangerZone = getNearby(boids, BOID_AVOID, width, height);
+        List<Boid> flockmates = getNearby(boids, BOID_SIGHT, width, height, BOIDS_SEGREGATE);
+        List<Boid> dangerZone = getNearby(boids, BOID_AVOID, width, height, false);
 
         separation(dangerZone, width, height);
         alignment(flockmates);
@@ -144,7 +152,11 @@ public class Boid {
         return angleRadians;
     }
 
-    public List<Boid> getNearby(List<Boid> boids, int radius, int width, int height) {
+    public List<Boid> getNearby(
+        List<Boid> boids, 
+        int radius, int width, 
+        int height, boolean checkTeam
+    ) {
         List<Boid> nearby = new ArrayList<>();
         for (Boid boid : boids) {
             double distance = Math.sqrt(
@@ -153,8 +165,10 @@ public class Boid {
             );
             // the choice to ignore boids of distance 0 is because the boid rules are deterministic
             // so, boids with the same coordinate and same heading are essentially the same boid
-            if (distance <= radius && distance > 0)
-                nearby.add(boid);
+            if (distance <= radius && distance > 0) {
+                if ((checkTeam && boid.getTeam().equals(this.team)) || !checkTeam)
+                    nearby.add(boid);
+            }
         }
         return nearby;
     }
@@ -177,6 +191,30 @@ public class Boid {
 
     public void clearGoal() {
         goalExists = false;
+    }
+
+    public void setTeam(BoidTeam team) {
+        this.team = team;
+    }
+
+    public BoidTeam getTeam() {
+        return team;
+    }
+
+    public enum BoidTeam {
+        WHITE(Color.WHITE),
+        BLUE(Color.CYAN),
+        YELLOW(Color.YELLOW);
+
+        private Color color;
+
+        BoidTeam(Color color) {
+            this.color = color;
+        }
+
+        public Color getColor() {
+            return color;
+        }
     }
 
 }
