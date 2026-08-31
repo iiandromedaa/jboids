@@ -82,6 +82,8 @@ public class JBoidsGUI {
                         case 'y':
                             selectedTeam = BoidTeam.YELLOW;
                             break;
+                        case ' ':
+                            boids.clear();
                         default:
                             break;
                     }

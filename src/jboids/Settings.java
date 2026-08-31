@@ -42,7 +42,7 @@ public class Settings {
     /**
      * should boids die after 20-30 seconds?
      */
-    public static final boolean BOIDS_DIE = true;
+    public static final boolean BOIDS_DIE = false;
     /**
      * should boids not flock with boids on other teams?
      */
